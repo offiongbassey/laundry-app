@@ -24,10 +24,12 @@ module.exports = (sequelize, DataTypes) => {
     },
     role:  {
       type: DataTypes.ENUM('super-admin', 'admin'),
-      defaultValue
+      defaultValue: 'admin'
     },
-    status: DataTypes.ENUM('pending', 'active', 'blocked', 'deleted'),
-    defaultValue: 'pending'
+    status: { 
+      type: DataTypes.ENUM('pending', 'active', 'blocked', 'deleted'),
+      defaultValue: 'pending'
+    }
   }, {
     sequelize,
     modelName: 'Admin',
