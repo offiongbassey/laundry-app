@@ -1,4 +1,4 @@
-import { body } from 'express-validator';
+import { body, header } from 'express-validator';
 import { checkAllowedFields, create_account_validation, titleCase } from '../helpers/validation';
 
 
@@ -52,4 +52,32 @@ export const create_admin_validator = [
         .custom(create_account_validation),
     body()
         .custom(body => checkAllowedFields(body, ['firstname', 'lastname', 'email', 'password', 'phone', 'gender']))
+]
+
+export const login_admin_validator = [
+    body('email')
+        .exists()
+        .withMessage("Email is required")
+        .notEmpty()
+        .withMessage("Email cannot be empty")
+        .isEmail()
+        .withMessage("Invalid Email Address")
+        .normalizeEmail(),
+    body('password')
+        .exists()
+        .withMessage("Password is required")
+        .notEmpty()
+        .withMessage("Password cannot be empty")
+        .isLength({ min: 7 })
+        .withMessage("Password cannot be less than 7 digits"),
+    body()
+        .custom(body => checkAllowedFields(body, ['email', 'password']))
+]
+
+export const logout_admin_validator = [
+    header('token')
+        .exists()
+        .withMessage("Token is required")
+        .notEmpty()
+        .withMessage("Token cannot be empty")
 ]
