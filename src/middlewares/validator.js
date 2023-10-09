@@ -53,3 +53,15 @@ export const create_admin_validator = [
     body()
         .custom(body => checkAllowedFields(body, ['firstname', 'lastname', 'email', 'password', 'phone', 'gender']))
 ]
+
+export const create_product_validator = [
+    body('name')
+        .exists()
+        .withMessage("Product Name is required")
+        .notEmpty()
+        .withMessage("Product Name cannot be empty")
+        .customSanitizer(titleCase),
+    body()
+        .custom(body => checkAllowedFields(body, ['name']))
+
+]
