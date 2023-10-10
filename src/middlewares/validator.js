@@ -1,5 +1,5 @@
 import { body, header, param } from 'express-validator';
-import { checkAllowedFields, create_account_validation, existingProduct, titleCase } from '../helpers/validation';
+import { checkAllowedFields, create_account_validation, existingProduct, existingProductType, titleCase } from '../helpers/validation';
 
 
 export const create_admin_validator = [
@@ -136,6 +136,63 @@ export const change_product_status_validator = [
         .isInt()
         .withMessage("Product ID must be a number")
         .custom(existingProduct),
+    param()
+        .custom(param => checkAllowedFields(param, ['id']))
+]
+
+export const create_product_type_valiator = [
+    body('name')
+        .exists()
+        .withMessage("Product Type Name is required")
+        .notEmpty()
+        .withMessage("Product Type Name cannot be empty")
+        .customSanitizer(titleCase),
+    body()
+        .custom(body => checkAllowedFields(body, ['name']))
+]
+
+export const update_product_type_validator = [
+    body('name')
+        .exists()
+        .withMessage("Product Type Name is required")
+        .notEmpty()
+        .withMessage("Product Type Name cannot be empty")
+        .customSanitizer(titleCase),
+    param('id')
+        .exists()
+        .withMessage("Product Type ID is required")
+        .notEmpty()
+        .withMessage("Product Type ID cannot be empty")
+        .isInt()
+        .withMessage("Product Type Must be number")
+        .custom(existingProductType),
+    param()
+        .custom(param => checkAllowedFields(param, ['id'])),
+    body()
+        .custom(body => checkAllowedFields(body, ['name']))
+]
+
+export const change_product_type_status_validator = [
+    param('id')
+        .exists()
+        .withMessage("Product Type ID is required")
+        .notEmpty()
+        .withMessage("Product Type ID cannot be empty")
+        .isInt()
+        .withMessage("Prodcut Type ID must be a number"),
+    param()
+        .custom(param => checkAllowedFields(param, ['id']))
+]
+
+export const delete_product_type_validator = [
+    param('id')
+        .exists()
+        .withMessage("Product Type ID is required")
+        .notEmpty()
+        .withMessage("Product Type ID cannot be empty")
+        .isInt()
+        .withMessage("Product Type ID must be a number")
+        .custom(existingProductType),
     param()
         .custom(param => checkAllowedFields(param, ['id']))
 ]

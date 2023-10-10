@@ -31,6 +31,9 @@ export const AdminGetAllProducts = async(req, res) => {
         if(!products){
             return responseHandler(res, 404, false, "Products not found");
         }
+        if(products.length < 1){
+            return responseHandler(res, 404, false, "Data not found");
+        }
         return responseHandler(res, 200, true, 'Products Retrieved', products);
     } catch (error) {
         await errorHandler(error);
@@ -59,6 +62,9 @@ export const activeProducts = async (req, res) => {
         const products = await Model.Product.findAll({ where: {status: 'active' } });
         if(!products){
             return responseHandler(res, 404, false, "No record found");
+        }
+        if(products.length < 1){
+            return responseHandler(res, 404, false, "Data not found");
         }
         return responseHandler(res, 200, true, "Products retrieved", products);
     } catch (error) {

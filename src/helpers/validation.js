@@ -84,3 +84,11 @@ export const existingProduct = async (id) => {
     }
     return true;
 }
+
+export const existingProductType = async (id) => {
+    const product_type = await Model.ProductType.findOne({ where: {id, status: {[Op.ne]: 'deleted' }}})
+    if(!product_type){
+        throw new Error("Product Type does not exist");
+    }
+    return true;
+}
