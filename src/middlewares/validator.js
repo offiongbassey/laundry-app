@@ -1,5 +1,5 @@
-import { body, header } from 'express-validator';
-import { checkAllowedFields, create_account_validation, titleCase } from '../helpers/validation';
+import { body, header, param } from 'express-validator';
+import { checkAllowedFields, create_account_validation, existingProduct, titleCase } from '../helpers/validation';
 
 
 export const create_admin_validator = [
@@ -80,4 +80,62 @@ export const logout_admin_validator = [
         .withMessage("Token is required")
         .notEmpty()
         .withMessage("Token cannot be empty")
+]
+
+export const create_product_validator = [
+    body('name')
+        .exists()
+        .withMessage("Product Name is required")
+        .notEmpty()
+        .withMessage("Product Name cannot be empty")
+        .customSanitizer(titleCase),
+    body()
+        .custom(body => checkAllowedFields(body, ['name']))
+]
+
+export const update_product_validator = [
+    body('name')
+        .exists()
+        .withMessage("Product Name is required")
+        .notEmpty()
+        .withMessage("Product Name cannot be empty")
+        .customSanitizer(titleCase),
+    param('id')
+        .exists()
+        .withMessage("Product ID is required")
+        .notEmpty()
+        .withMessage("Product ID cannot be empty")
+        .isInt()
+        .withMessage("Product ID must be a number")
+        .custom(existingProduct),
+    param()
+        .custom(param => checkAllowedFields(param, ['id'])),
+    body()
+        .custom(body => checkAllowedFields(body, ['name']))
+]
+
+export const delete_product_validator = [
+    param('id')
+        .exists()
+        .withMessage("Product ID is required")
+        .notEmpty()
+        .withMessage("Product ID Cannot be empty")
+        .isInt()
+        .withMessage("Product ID must be Number ")
+        .custom(existingProduct),
+    param()
+        .custom(param => checkAllowedFields(param, ['id']))
+]
+
+export const change_product_status_validator = [
+    param('id')
+        .exists()
+        .withMessage("Product ID is required")
+        .notEmpty()
+        .withMessage("Product ID cannot be empty")
+        .isInt()
+        .withMessage("Product ID must be a number")
+        .custom(existingProduct),
+    param()
+        .custom(param => checkAllowedFields(param, ['id']))
 ]

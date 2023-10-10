@@ -1,6 +1,7 @@
 import { validationResult } from "express-validator";
 import { responseHandler } from "./responseHandler";
 import Model from '../server/models';
+const Op = Model.Sequelize.Op;
 
 export const checkAllowedFields = (payload, fields) => {
     payload = Array.isArray(payload) ? payload : [payload];
@@ -72,6 +73,14 @@ export const acceptedPhoneNumber = async (phone) => {
         throw new Error("Wrong Phone Number type. Tips: 08012345678");
     }else if (phone_type !== `+` && phone_type != 0){
         throw new Error("Invalid Phone Number");
+    }
+    return true;
+}
+
+export const existingProduct = async (id) => {
+    const product = await Model.Product.findOne({where: {id, status: {[Op.ne]: 'deleted'}}});
+    if(!product){
+        throw new Error("Product does not exist");
     }
     return true;
 }

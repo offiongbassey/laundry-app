@@ -60,7 +60,7 @@ export const adminLogout = async (req, res) => {
         const redis_token = await client.get(`admin_${ verification.id.toString()}`);
 
         if(redis_token){
-            await client.DEL(`user_${ verification.id.toString() }`);
+            await client.DEL(`admin_${ verification.id.toString() }`);
         }
 
         return responseHandler(res, 200, true, "You have successfully logged out.");
