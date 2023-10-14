@@ -92,3 +92,9 @@ export const existingProductType = async (id) => {
     }
     return true;
 }
+
+export const createVendorValidation = async (body) => {
+    await existingEmail(body.email, 'Vendor');
+    await acceptedPhoneNumber(body.phone, 'Vendor');
+    await existingPhone(body.phone, 'Vendor');
+}
