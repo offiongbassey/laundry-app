@@ -1,5 +1,5 @@
 import { body, header, param } from 'express-validator';
-import { checkAllowedFields, create_account_validation, existingProduct, existingProductType, titleCase } from '../helpers/validation';
+import { checkAllowedFields, createVendorValidation, create_account_validation, existingProduct, existingProductType, titleCase } from '../helpers/validation';
 
 
 export const create_admin_validator = [
@@ -195,4 +195,51 @@ export const delete_product_type_validator = [
         .custom(existingProductType),
     param()
         .custom(param => checkAllowedFields(param, ['id']))
+]
+
+export const create_vendor_validator = [
+    body('firstname')
+        .exists()
+        .withMessage("First Name is required")
+        .notEmpty()
+        .withMessage("First Name cannot be empty")
+        .customSanitizer(titleCase)
+        .trim(),
+    body('lastname')
+        .exists()
+        .withMessage("Last Name is required")
+        .notEmpty()
+        .withMessage("Last Name cannot be empty")
+        .customSanitizer(titleCase)
+        .trim(),
+    body('email')
+        .exists()
+        .withMessage("Email is required")
+        .notEmpty()
+        .withMessage("Email cannot be empty")
+        .normalizeEmail(),
+    body('password')
+        .exists()
+        .withMessage("Password is required")
+        .notEmpty()
+        .withMessage("Password cannot be empty")
+        .isLength({ min: 7 })
+        .withMessage("Password must be atleast 7 characters"),
+    body('phone')
+        .exists()
+        .withMessage("Phone Number is required")
+        .notEmpty()
+        .withMessage("Phone Numbner cannot be empty")
+        .isLength({ min: 11, max: 14 })
+        .withMessage("Invalid Phone Number"),
+    body('gender')
+        .exists()
+        .withMessage("Gender is required")
+        .notEmpty()
+        .withMessage("Gender cannot be empty")
+        .isIn(['male', 'female'])
+        .withMessage("Gender must be male or female"),
+    body()
+        .custom(createVendorValidation)
+        .custom(body => checkAllowedFields(body, ['firstname', 'lastname', 'email', 'password', 'phone', 'gender']))
 ]

@@ -9,13 +9,13 @@ export const createAdmin = async (req, res) => {
    try {
     const { firstname, lastname, email, password, phone, gender } = req.body;
     const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    const hashed_password = await bcrypt.hash(password, salt);
 
     const admin = await Model.Admin.create({
         firstname,
         lastname,
         email,
-        password: hashedPassword,
+        password: hashed_password,
         phone,
         gender
     });
