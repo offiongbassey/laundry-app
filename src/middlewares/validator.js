@@ -23,6 +23,7 @@ export const create_admin_validator = [
         .withMessage("Email cannot be empty")
         .isEmail()
         .withMessage("Email is not valid")
+        .trim()
         .normalizeEmail(),
     body('password')
         .exists()
@@ -62,6 +63,7 @@ export const login_admin_validator = [
         .withMessage("Email cannot be empty")
         .isEmail()
         .withMessage("Invalid Email Address")
+        .trim()
         .normalizeEmail(),
     body('password')
         .exists()
@@ -88,6 +90,7 @@ export const create_product_validator = [
         .withMessage("Product Name is required")
         .notEmpty()
         .withMessage("Product Name cannot be empty")
+        .trim()
         .customSanitizer(titleCase),
     body()
         .custom(body => checkAllowedFields(body, ['name']))
@@ -99,6 +102,7 @@ export const update_product_validator = [
         .withMessage("Product Name is required")
         .notEmpty()
         .withMessage("Product Name cannot be empty")
+        .trim()
         .customSanitizer(titleCase),
     param('id')
         .exists()
@@ -146,6 +150,7 @@ export const create_product_type_valiator = [
         .withMessage("Product Type Name is required")
         .notEmpty()
         .withMessage("Product Type Name cannot be empty")
+        .trim()
         .customSanitizer(titleCase),
     body()
         .custom(body => checkAllowedFields(body, ['name']))
@@ -157,6 +162,7 @@ export const update_product_type_validator = [
         .withMessage("Product Type Name is required")
         .notEmpty()
         .withMessage("Product Type Name cannot be empty")
+        .trim()
         .customSanitizer(titleCase),
     param('id')
         .exists()
@@ -217,6 +223,7 @@ export const create_vendor_validator = [
         .withMessage("Email is required")
         .notEmpty()
         .withMessage("Email cannot be empty")
+        .trim()
         .normalizeEmail(),
     body('password')
         .exists()
@@ -231,6 +238,7 @@ export const create_vendor_validator = [
         .notEmpty()
         .withMessage("Phone Numbner cannot be empty")
         .isLength({ min: 11, max: 14 })
+        .trim()
         .withMessage("Invalid Phone Number"),
     body('gender')
         .exists()
@@ -242,4 +250,31 @@ export const create_vendor_validator = [
     body()
         .custom(createVendorValidation)
         .custom(body => checkAllowedFields(body, ['firstname', 'lastname', 'email', 'password', 'phone', 'gender']))
+]
+
+export const login_vendor_validator = [
+    body('email')
+        .exists()
+        .withMessage("Email is required")
+        .notEmpty()
+        .withMessage("Email cannot be empty")
+        .trim()
+        .normalizeEmail(),
+    body('password')
+        .exists()
+        .withMessage("Password is required")
+        .notEmpty()
+        .withMessage("Password cannot be empty")
+        .isLength({ min: 7 })
+        .withMessage("Password must not be less than 7 characters"),
+    body()
+        .custom(body => checkAllowedFields(body, ['email', 'password']))
+]
+
+export const logout_vendor_validator = [
+    header('token')
+        .exists()
+        .withMessage("Token is required")
+        .notEmpty()
+        .withMessage("Token cannot be empty")
 ]
