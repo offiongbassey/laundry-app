@@ -98,3 +98,15 @@ export const createVendorValidation = async (body) => {
     await acceptedPhoneNumber(body.phone, 'Vendor');
     await existingPhone(body.phone, 'Vendor');
 }
+
+export const existingBusinessAccount = async (registration_number) => {
+    const business_account = await Model.Business.findOne({ where: { registration_number }});
+    if(business_account){
+        throw new Error("Business Account already exist");
+    }
+    return true;
+}
+export const createBusinessValidation = async (body) => {
+    await acceptedPhoneNumber(body.phone, 'Business');
+    await existingBusinessAccount(body.registration_number)
+}
