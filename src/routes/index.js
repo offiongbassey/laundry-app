@@ -3,6 +3,7 @@ import adminRoute  from './admin';
 import productRoute from './product';
 import productTypeRoute from './productType';
 import vendorRoute from './vendor';
+
 const router = express.Router();
 
 router.use('/admin', adminRoute);

@@ -64,3 +64,25 @@ export const logoutVendor = async (req, res) => {
         return responseHandler(res, 500, false, "Something went wrong, try again later");
     }
 }
+
+export const createNewBusiness = async (req, res) => {
+    try {
+        const vendor_id = req.vendor.id;
+        const { business_name, registration_number, date_registered, phone, address, lga, state } = req.body;
+        const business = await Model.Business.create({
+            vendor_id,
+            business_name, 
+            registration_number, 
+            date_registered, 
+            phone,
+            address, 
+            lga,
+            state
+        });
+        
+        return responseHandler(res, 201, true, "Business Account created successfully", business);
+    } catch (error) {
+        await errorHandler(error);
+        return responseHandler(res, 500, false, "Something went wrong, try again later");
+    }
+}

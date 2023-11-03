@@ -1,5 +1,5 @@
 import { body, header, param } from 'express-validator';
-import { checkAllowedFields, createVendorValidation, create_account_validation, existingProduct, existingProductType, titleCase } from '../helpers/validation';
+import { checkAllowedFields, createBusinessValidation, createVendorValidation, create_account_validation, existingProduct, existingProductType, titleCase } from '../helpers/validation';
 
 
 export const create_admin_validator = [
@@ -277,4 +277,61 @@ export const logout_vendor_validator = [
         .withMessage("Token is required")
         .notEmpty()
         .withMessage("Token cannot be empty")
+]
+
+export const create_business_validator = [
+    header('token')
+        .exists()
+        .withMessage("Token is required")
+        .notEmpty()
+        .withMessage("Token cannot be empty"),
+    body('business_name')
+        .exists()
+        .withMessage("Business Name is required")
+        .notEmpty()
+        .withMessage("Business Name cannot be empty")
+        .customSanitizer(titleCase)
+        .trim(),
+    body('registration_number')
+        .exists()
+        .withMessage("Registration Number is required")
+        .notEmpty()
+        .withMessage("Registration Number cannot be empty")
+        .isInt()
+        .withMessage("Registration Number must be a number")
+        .trim(),
+    body('date_registered')
+        .exists()
+        .withMessage("Registration Date is required")
+        .notEmpty()
+        .withMessage("Registration Date cannot be empty")
+        .trim(),
+    body('phone')
+        .exists()
+        .withMessage("Phone Number is required")
+        .notEmpty()
+        .withMessage("Phone Number cannot be empty")
+        .isLength({ min: 11, max: 14})
+        .trim(),
+    body('address')
+        .exists()
+        .withMessage("Address is required")
+        .notEmpty()
+        .withMessage("Address cannot be empty")
+        .trim(),
+    body('lga')
+        .exists()
+        .withMessage("LGA is required")
+        .notEmpty()
+        .withMessage("LGA cannot be empty")
+        .customSanitizer(titleCase)
+        .trim(),
+    body('state')
+        .exists()
+        .withMessage("State of Residence is required")
+        .notEmpty()
+        .withMessage("State cannot be empty"),
+    body()
+        .custom(createBusinessValidation)
+        .custom(body => checkAllowedFields(body, ['business_name', 'registration_number', 'date_registered', 'phone', 'address', 'lga', 'state'])) 
 ]
