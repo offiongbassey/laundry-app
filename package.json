@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "db:migrate": "sequelize db:migrate",
+    "db:migrate:undo": "sequelize db:migrate:undo",
     "start": "nodemon --exec babel-node ./src/index.js"
   },
   "repository": "https://github.com/offiongbassey/laundry-app.git",

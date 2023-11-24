@@ -335,3 +335,123 @@ export const create_business_validator = [
         .custom(createBusinessValidation)
         .custom(body => checkAllowedFields(body, ['business_name', 'registration_number', 'date_registered', 'phone', 'address', 'lga', 'state'])) 
 ]
+
+export const create_service_validator = [
+    header("token")
+        .exists()
+        .withMessage("Token is required")
+        .notEmpty()
+        .withMessage("Token cannot be empty"),
+    body("business_id")
+        .exists()
+        .withMessage("Business ID is required")
+        .notEmpty()
+        .withMessage("Business ID cannot be empty")
+        .isInt()
+        .withMessage("Business ID must be number")
+        .trim(),
+    body("product_id")
+        .exists()
+        .withMessage("Product ID is required")
+        .notEmpty()
+        .withMessage("Product ID cannot be empty")
+        .isInt()
+        .withMessage("Product ID must be number")
+        .trim(),
+    body("product_type_id")
+        .exists()
+        .withMessage("Product ID is required")
+        .notEmpty()
+        .withMessage("Product ID cannot be empty")
+        .isInt()
+        .withMessage("Product ID must be Number"),
+    body("price")
+        .exists()
+        .withMessage("Product Price cannot be empty")
+        .notEmpty()
+        .withMessage("Product Price cannot be empty")
+        .isInt()
+        .withMessage("Product Price must be number")
+        .trim(),
+    body()
+        .custom(body => checkAllowedFields(body, ['business_id', 'product_id', 'product_type_id', 'price' ]))
+        
+]
+
+export const vendor_view_all_services_validator = [
+    header("token")
+        .exists()
+        .withMessage("Token is required")
+        .notEmpty()
+        .withMessage("Token cannot be empty"),
+    param("business_id")
+        .exists()
+        .withMessage("Business ID is required")
+        .notEmpty()
+        .withMessage("Business ID cannot be empty")
+        .isInt()
+        .withMessage("Business ID must be number"),
+    param()
+        .custom(param => checkAllowedFields(param, ['business_id']))
+]
+
+export const vendor_update_service_validator = [
+    header("token")
+        .exists()
+        .withMessage("Token is required")
+        .notEmpty()
+        .withMessage("Token cannot be empty"),
+    param("service_id")
+        .exists()
+        .withMessage("Service ID is required")
+        .notEmpty()
+        .withMessage("Service ID cannot be empty")
+        .isInt()
+        .withMessage("Service ID must be number"),
+    body('price')
+        .exists()
+        .withMessage("Price is required")
+        .notEmpty()
+        .withMessage("Price cannot be empty")
+        .isInt()
+        .withMessage("Must be a number")
+        .trim(),
+    body()
+        .custom(body => checkAllowedFields(body, ['price'])),
+    param()
+        .custom(param => checkAllowedFields(param, ['service_id']))
+]
+
+export const update_service_status_validator = [
+    header('token')
+        .exists()
+        .withMessage("Token is required")
+        .notEmpty()
+        .withMessage("Token cannot be empty"),
+    param("service_id")
+        .exists()
+        .withMessage("Service ID is required")
+        .notEmpty()
+        .withMessage("Service ID cannot be empty")
+        .isInt()
+        .withMessage("Service ID must be a number"),
+    param()
+        .custom(param => checkAllowedFields(param, ['service_id']))
+]
+
+export const delete_service_validator = [
+    header('token')
+        .exists()
+        .withMessage("Token is required")
+        .notEmpty()
+        .withMessage("Token cannot be empty"),
+    param("service_id")
+        .exists()
+        .withMessage("Service ID is required")
+        .notEmpty()
+        .withMessage("Service ID cannot be empty")
+        .isInt()
+        .withMessage("Service ID must be a number"),
+    param()
+        .custom(param => checkAllowedFields(param, ['service_id']))
+]
