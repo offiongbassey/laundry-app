@@ -1,5 +1,5 @@
 import { body, header, param } from 'express-validator';
-import { checkAllowedFields, createBusinessValidation, createVendorValidation, create_account_validation, existingProduct, existingProductType, titleCase } from '../helpers/validation';
+import { checkAllowedFields, createBusinessValidation, createUserValidation, createVendorValidation, create_account_validation, existingProduct, existingProductType, titleCase } from '../helpers/validation';
 
 
 export const create_admin_validator = [
@@ -454,4 +454,96 @@ export const delete_service_validator = [
         .withMessage("Service ID must be a number"),
     param()
         .custom(param => checkAllowedFields(param, ['service_id']))
+]
+
+export const user_signup_validator = [
+    body('firstname')
+        .exists()
+        .withMessage("First Name is required")
+        .notEmpty()
+        .withMessage("First Name cannot be empty")
+        .customSanitizer(titleCase)
+        .trim(),
+    body('lastname')
+        .exists()
+        .withMessage("Last Name is required")
+        .notEmpty()
+        .withMessage("Last Name cannot be empty")
+        .customSanitizer(titleCase)
+        .trim(),
+    body('email')
+        .exists()
+        .withMessage("Email is required")
+        .notEmpty()
+        .withMessage("Email cannot be empty")
+        .isEmail()
+        .withMessage("Invalid Email Address")
+        .normalizeEmail()
+        .trim(),
+    body('password')
+        .exists()
+        .withMessage("Password is required")
+        .notEmpty()
+        .withMessage("Password must not be empty")
+        .isLength({min: 7})
+        .withMessage("Password must be at least 7 characters"),
+    body('phone')
+        .exists()
+        .withMessage("Phone Number is required")
+        .notEmpty()
+        .withMessage("Phone Number cannot be empty")
+        .isLength({ min: 11, max: 14})
+        .withMessage("Phone Number must not be less than 11 characters and not more than 14 characters"),
+    body('gender')
+        .exists()
+        .withMessage("Gender is required")
+        .notEmpty()
+        .withMessage("Gender cannot be empty")
+        .isIn(['male', 'female'])
+        .withMessage("Gender must be male or female"),
+    body()
+        .custom(createUserValidation)
+        .custom(body => checkAllowedFields(body, ['firstname', 'lastname', 'email', 'password', 'phone', 'gender']))
+]
+
+export const user_login_validator = [
+    body('email')
+        .exists()
+        .withMessage("Email is required")
+        .notEmpty()
+        .withMessage("Email cannot be empty")
+        .normalizeEmail()
+        .isEmail()
+        .withMessage("Invalid Email format")
+        .trim(),
+    body('password')
+        .exists()
+        .withMessage("Password is required")
+        .notEmpty()
+        .withMessage("Password cannot be empty"),
+    body()
+        .custom(body => checkAllowedFields(body, ['email', 'password']))
+]
+
+export const user_logout_validator = [
+    header('token')
+        .exists()
+        .withMessage("Token is required")
+        .notEmpty()
+        .withMessage("Token cannot be empty")
+]
+
+export const active_services_by_vendor_validator = [
+    header('token')
+        .exists()
+        .withMessage("Token is required")
+        .notEmpty()
+        .withMessage("Token cannot be empty"),
+    param('business_id')
+        .exists()
+        .withMessage("Business ID is required")
+        .notEmpty()
+        .withMessage("Business ID cannot be empty")
+        .isInt()
+        .withMessage("Business ID must be a number")
 ]

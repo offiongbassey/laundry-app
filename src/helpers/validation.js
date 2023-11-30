@@ -110,3 +110,8 @@ export const createBusinessValidation = async (body) => {
     await acceptedPhoneNumber(body.phone, 'Business');
     await existingBusinessAccount(body.registration_number)
 }
+export const createUserValidation = async(body) => {
+    await existingEmail(body.email, 'User');
+    await acceptedPhoneNumber(body.phone, 'User');
+    await existingPhone(body.phone, 'User');
+}

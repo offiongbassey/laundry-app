@@ -93,3 +93,26 @@ export const deleteService = async(req, res) => {
         return responseHandler(res, 500, false, "Something went wrong, try again later");
     }
 }
+
+export const activeServicesByVendor = async(req, res) => {
+    try {
+        const { business_id } = req.params;
+        const services = await Model.Service.findAll({ where: { business_id, status: 'active'}, include: [
+            { model: Model.Product, 
+            attributes: [
+                "image",
+                "slug_url"
+            ], 
+            as: 'product' }
+        ] });
+
+        if(services.length < 1 ){
+                return responseHandler(res, 404, false, "Services not available for this vendor, check back later.");
+        }
+
+        return responseHandler(res, 200, true, "Services Available", services);
+    } catch (error) {
+        await errorHandler(error);
+        return responseHandler(res, 500, false, "Something went wrong, try again later");
+    }
+}

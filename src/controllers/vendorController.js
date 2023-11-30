@@ -19,6 +19,7 @@ export const createVendor = async (req, res) => {
             phone,
             gender,
         });
+        new_vendor.password = undefined;
         return responseHandler(res, 201, true, "Account successfully created", new_vendor);
     } catch (error) {
         await errorHandler(error);
