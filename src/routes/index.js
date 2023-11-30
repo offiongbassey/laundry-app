@@ -4,6 +4,7 @@ import productRoute from './product';
 import productTypeRoute from './productType';
 import vendorRoute from './vendor';
 import serviceRoute from './service';
+import userRoute from './user';
 
 const router = express.Router();
 
@@ -12,5 +13,6 @@ router.use('/product', productRoute);
 router.use('/product-type', productTypeRoute);
 router.use('/vendor', vendorRoute);
 router.use('/service', serviceRoute);
+router.use('/user', userRoute);
 
 module.exports = router;

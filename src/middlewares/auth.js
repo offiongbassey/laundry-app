@@ -57,3 +57,32 @@ export const vendorAuth = async(req, res, next) => {
         return responseHandler(res, 500, false, "Something went wrong, try again later.");
     }
 }
+
+export const userAuth = async(req, res, next) => {
+    try {
+        const { token } = req.headers;
+        if(!token){
+            return responseHandler(res, 404, false, "Token is required");   
+        }
+
+        const verification = jwtVerification(token);
+        const redis_token = await client.get(`user_${ verification.id.toString() }`, (err, data) => {
+            if(err) throw new err;
+        });
+
+        if(!redis_token){
+            return responseHandler(res, 404, false, "Not logged In");
+        }
+
+        const user = await Model.User.findOne({ where: { id: verification.id }});
+        if(!user){
+            return responseHandler(res, 404, false, "User not found");
+        }
+        
+        req.user = user;
+        next();
+    } catch (error) {
+        await errorHandler(error);
+        return responseHandler(res, 500, false, "Something went wrong, try again later");
+    }
+}
