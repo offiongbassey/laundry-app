@@ -1,5 +1,5 @@
 import { body, header, param } from 'express-validator';
-import { checkAllowedFields, createBusinessValidation, createUserValidation, createVendorValidation, create_account_validation, existingProduct, existingProductType, titleCase } from '../helpers/validation';
+import { checkAllowedFields, createAccountValidation, createBusinessValidation, createUserValidation, createVendorValidation, existingProduct, existingProductType, titleCase } from '../helpers/validation';
 
 
 export const create_admin_validator = [
@@ -50,7 +50,7 @@ export const create_admin_validator = [
         .isIn(['male', 'female'])
         .withMessage("Gender must be male or female"),
     body()
-        .custom(create_account_validation),
+        .custom(createAccountValidation),
     body()
         .custom(body => checkAllowedFields(body, ['firstname', 'lastname', 'email', 'password', 'phone', 'gender']))
 ]
@@ -546,4 +546,63 @@ export const active_services_by_vendor_validator = [
         .withMessage("Business ID cannot be empty")
         .isInt()
         .withMessage("Business ID must be a number")
+]
+
+export const create_order_validator = [
+    header('token')
+        .exists()
+        .withMessage("Token is required")
+        .notEmpty()
+        .withMessage("Token cannot be empty"),
+    body('business_id')
+        .exists()
+        .withMessage("Business ID is required")
+        .notEmpty()
+        .withMessage("Business Id cannot be empty")
+        .isInt()
+        .withMessage("Business ID must be a number"),
+    body('total_amount')
+        .exists()
+        .withMessage("Amount is required")
+        .notEmpty()
+        .withMessage("Amount cannot be empty")
+        .isFloat()
+        .withMessage("Amount must be a number")
+]
+
+export const user_order_by_id_validator = [
+    param('order_id')
+        .exists()
+        .withMessage("User ID is required")
+        .notEmpty()
+        .withMessage("User ID cannot be empty")
+        .isInt()
+        .withMessage("User ID must be a number")
+]
+
+export const user_delete_order_item_validator = [
+    param('order_item_id')
+        .exists()
+        .withMessage("Order Item ID is required")
+        .notEmpty()
+        .withMessage("Order Item ID cannot be empty")
+        .isInt()
+        .withMessage("Order Item ID must be a number"),
+    param('order_id')
+        .exists()
+        .withMessage("Order ID is required")
+        .notEmpty()
+        .withMessage("Order ID cannot be empty")
+        .isInt()
+        .withMessage("Order ID must be a number")
+]
+
+export const user_delete_order_validator = [
+    param('order_id')
+        .exists()
+        .withMessage("Order ID is required")
+        .notEmpty()
+        .withMessage("Order ID cannot be empty")
+        .isInt()
+        .withMessage("Order ID must be a number")
 ]

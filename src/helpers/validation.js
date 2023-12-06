@@ -17,7 +17,7 @@ export const checkAllowedFields = (payload, fields) => {
     return true;
 }
 
-export const create_account_validation = async (body) => {
+export const createAccountValidation = async (body) => {
     await existingEmail(body.email, 'Admin');
     await acceptedPhoneNumber(body.phone, 'Admin');
     await existingPhone(body.phone, 'Admin');
@@ -106,10 +106,12 @@ export const existingBusinessAccount = async (registration_number) => {
     }
     return true;
 }
+
 export const createBusinessValidation = async (body) => {
     await acceptedPhoneNumber(body.phone, 'Business');
     await existingBusinessAccount(body.registration_number)
 }
+
 export const createUserValidation = async(body) => {
     await existingEmail(body.email, 'User');
     await acceptedPhoneNumber(body.phone, 'User');
