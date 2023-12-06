@@ -1,5 +1,5 @@
 import express from 'express';
-import { activeServicesByVendor, changeServiceStatus, createService, deleteService, updateVendorService, viewAllVendorServices } from '../controllers/serviceController';
+import { activeServicesByVendor, changeServiceStatus, createOrder, createService, deleteService, updateVendorService, viewAllVendorServices } from '../controllers/serviceController';
 import { validationHandler } from '../helpers/validation';
 import { active_services_by_vendor_validator, create_service_validator, delete_service_validator, update_service_status_validator, vendor_update_service_validator, vendor_view_all_services_validator } from '../middlewares/validator';
 import { userAuth, vendorAuth } from '../middlewares/auth';

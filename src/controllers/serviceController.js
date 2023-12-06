@@ -100,10 +100,16 @@ export const activeServicesByVendor = async(req, res) => {
         const services = await Model.Service.findAll({ where: { business_id, status: 'active'}, include: [
             { model: Model.Product, 
             attributes: [
+                "name",
                 "image",
                 "slug_url"
             ], 
-            as: 'product' }
+            as: 'product' },
+            { model: Model.ProductType, 
+            attributes: [
+                "name"
+            ], 
+            as: 'product_type'}
         ] });
 
         if(services.length < 1 ){

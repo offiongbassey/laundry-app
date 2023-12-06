@@ -10,7 +10,15 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+     Order.hasMany(models.Order_Item, {
+      foreignKey: 'order_id',
+      as: 'order_items'
+     },
+     Order.belongsTo(models.Business, {
+      foreignKey: 'business_id',
+      as: 'vendor'
+     })
+     )
     }
   }
   Order.init({
@@ -20,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
     service_charge: DataTypes.INTEGER,
     status: 
     { 
-      type: DataTypes.EUNM('pending', 'paid', 'canceled', 'processing', 'deleted', 'delivered', 'rejected'), 
+      type: DataTypes.ENUM('pending', 'paid', 'canceled', 'processing', 'deleted', 'delivered', 'rejected'), 
       defaultValue: 'pending'
     },
     note: DataTypes.STRING,

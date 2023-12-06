@@ -14,7 +14,11 @@ module.exports = (sequelize, DataTypes) => {
       Service.belongsTo(models.Product, {
         foreignKey: 'product_id',
         as: 'product'
-      })
+      },
+      Service.belongsTo(models.ProductType, {
+        foreignKey: 'product_type_id',
+        as: 'product_type'
+      }))
     }
   }
   Service.init({
